@@ -104,6 +104,24 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var tempArray = [];
+
+    if (array.length > 0) {
+      tempArray.push(array[0]);
+
+      var alreadyExists;
+      for (var x=1; x<array.length; x++) {
+        alreadyExists = false;
+        for (var y=0; y<tempArray.length; y++) {
+          if (array[x] == tempArray[y])
+            alreadyExists = true;
+        }
+        if (!alreadyExists)
+          tempArray.push(array[x]);
+      }
+    }
+
+    return tempArray;
   };
 
 
