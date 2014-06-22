@@ -57,7 +57,7 @@ var _ = {};
       }
     } else {
       for (var k in collection) {
-        iterator(collection[k], k, collection)
+        iterator(collection[k], k, collection);
       }
     }
   };
@@ -134,7 +134,7 @@ var _ = {};
     for (var x=0; x<collection.length; x++) {
       collection[x] = iterator(collection[x]);
     }
-    
+
     return collection;
   };
 
@@ -159,6 +159,17 @@ var _ = {};
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    var tempCollection = [];
+    if (functionOrKey == 'toUpperCase') {
+      _.map(collection, function(item){
+        tempCollection.push(item.toUpperCase());
+      });
+    } else {
+      _.map(collection, function(item){
+        tempCollection.push(functionOrKey.apply(item, args));
+      });
+    }
+    return tempCollection;
   };
 
   // Reduces an array or object to a single value by repetitively calling
