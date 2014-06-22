@@ -81,9 +81,15 @@ var _ = {};
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var reject = false;
+    if (arguments[2] == true) // if 3rd argument is 'true', return opposite elements
+      reject = true;
+
     var tempArray = [];
     for (var x=0; x < collection.length; x++) {
-      if (test(collection[x]))
+      if (test(collection[x]) && !reject)
+        tempArray.push(collection[x]);
+      else if (!test(collection[x]) && reject)
         tempArray.push(collection[x]);
     }
     return tempArray;
@@ -93,6 +99,7 @@ var _ = {};
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, test, true); // add a 3rd argument 'true' for rejection
   };
 
   // Produce a duplicate-free version of the array.
