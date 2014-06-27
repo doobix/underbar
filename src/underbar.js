@@ -187,8 +187,11 @@ var _ = {};
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
     var initialValue = accumulator;
+    var isBoolean = false;
     if (initialValue == undefined) {
       initialValue = collection[0];
+    } else if (initialValue === false) {
+      isBoolean = true;
     }
 
     var total=0;
@@ -201,7 +204,11 @@ var _ = {};
         total = iterator(total, collection[k]);
       }
     }
-    return total+initialValue;
+    
+    if (isBoolean)
+      return (total+initialValue) ? true : false;
+    else
+      return total+initialValue;
   };
 
   // Determine if the array or object contains a given value (using `===`).
