@@ -194,21 +194,21 @@ var _ = {};
       isBoolean = true;
     }
 
-    var total=0;
+    var previousValue=0;
     if (Array.isArray(collection)) {
       for (var x=0; x<collection.length; x++) {
-          total = iterator(total, collection[x]);
+          previousValue = iterator(previousValue, collection[x]);
       }
     } else {
       for (var k in collection) {
-        total = iterator(total, collection[k]);
+        previousValue = iterator(previousValue, collection[k]);
       }
     }
     
     if (isBoolean)
-      return (total+initialValue) ? true : false;
+      return (previousValue+initialValue) ? true : false;
     else
-      return total+initialValue;
+      return previousValue+initialValue;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -227,6 +227,12 @@ var _ = {};
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    var isTruthful = true;
+    _.reduce(collection, function(wasFound, item) {
+      if (wasFound != item)
+        isTruthful = false;
+    });
+    return isTruthful;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -255,6 +261,12 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    for (var x=1; x<arguments.length; x++) {
+      for (var k in arguments[x]) {
+        obj[k] = arguments[x][k];
+      }
+    }
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
