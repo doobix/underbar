@@ -320,6 +320,16 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var alreadyCalled = false;
+    var result;
+
+    if (!alreadyCalled) {
+      console.log('this:'+func);
+      result = func;
+      console.log('this2:'+result);
+      alreadyCalled = true;
+    }
+    return result;
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -329,6 +339,12 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var funcArgs = [];
+    if (arguments.length > 2) {
+      for (var x=2; x<arguments.length; x++)
+        funcArgs.push(arguments[x]);
+    }
+    setTimeout(function(){func.apply(this, funcArgs)}, wait);
   };
 
 
@@ -343,6 +359,25 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arrayCopy = array.slice();
+
+    for (var shuffleCount=0; shuffleCount<5; shuffleCount++) {
+      var arrayOne = [];
+      var arrayTwo = [];
+      for (var x=0; x<arrayCopy.length; x++) {
+        // Make random number: 1 or 2
+        var randomNum = Math.floor(Math.random()*3);
+        if (randomNum==1) {
+          arrayOne.push(arrayCopy[x]);
+        } else {
+          arrayTwo.push(arrayCopy[x]);
+        }
+      }
+      arrayCopy = arrayOne.concat(arrayTwo);
+    }
+
+    console.log(arrayCopy);
+    return arrayCopy;
   };
 
 
