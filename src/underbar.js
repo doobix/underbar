@@ -253,6 +253,25 @@ var _ = {};
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    var truthArray = [];
+    var result;
+
+    if (collection.length == 0)
+      return false;
+
+    for (var k in collection) {
+      if (iterator)
+        truthArray.push((iterator(collection[k])) ? true : false);
+      else
+        truthArray.push((collection[k]) ? true : false);
+    }
+
+console.log(truthArray);
+    for (var x=0; x<truthArray.length; x++) {
+      if (truthArray[x] == true)
+        return true;
+    }
+    return false;
   };
 
 
