@@ -266,7 +266,6 @@ var _ = {};
         truthArray.push((collection[k]) ? true : false);
     }
 
-console.log(truthArray);
     for (var x=0; x<truthArray.length; x++) {
       if (truthArray[x] == true)
         return true;
@@ -355,14 +354,18 @@ console.log(truthArray);
   _.memoize = function(func) {
     var alreadyCalled = false;
     var result;
+    var savedArguments;
 
-    if (!alreadyCalled) {
-      console.log('this:'+func);
-      result = func;
-      console.log('this2:'+result);
-      alreadyCalled = true;
-    }
-    return result;
+    // TIP: We'll return a new function that delegates to the old one, but only
+    // if it hasn't been called before.
+    return function() {
+      if (!alreadyCalled || (savedArguments != arguments[0])) {
+        result = func.apply(this, arguments);
+        savedArguments = arguments[0];
+        alreadyCalled = true;
+      }
+      return result;
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -409,7 +412,6 @@ console.log(truthArray);
       arrayCopy = arrayOne.concat(arrayTwo);
     }
 
-    console.log(arrayCopy);
     return arrayCopy;
   };
 
